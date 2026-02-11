@@ -1,12 +1,18 @@
-import speech_recognition as sr
+import sounddevice as sd
 
-r = sr.Recognizer()
+duration = 5
+fs = 44100
 
-harvard = sr.AudioFile('harvard.wav')
-with harvard as source:
-    r.adjust_for_ambient_noise(source, duration=0.5)
-    audio = r.record(source)
+sd.default.device = 13
 
-output = r.recognize_google(audio, show_all=True)
+#record
+print("Recoding...")
+myrecording = sd.rec(int(duration * fs), samplerate=fs, channels=1)
+sd.wait()
+print("Recoding finished")
 
-print(output)
+#playback
+print("Playing back...")
+sd.play(myrecording, fs)
+sd.wait()
+print("Done")
